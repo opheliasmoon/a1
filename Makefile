@@ -1,17 +1,18 @@
-FLAGS=-fopenmp -O2 -march=native
-CC=gcc
-CXX=g++
+CXX = g++
+CXXFLAGS = -O3 -std=c++17 -fopenmp
 
-all: ver reduction hello reduction-simd info vectoradd-simd reduction-simd-typed monte-carlo-pi
+TARGETS = saxpy montecarlo_pi histogram_gather
 
-hello: omp_hello.c
-	$(CC) $(FLAGS) omp_hello.c -o omp_hello
+all: $(TARGETS)
 
-ver: omp_ver.cc
-	$(CXX) $(FLAGS) omp_ver.cc -o omp_ver
-	  
-reduction: omp_reduction.cc
-	$(CXX) $(FLAGS) omp_reduction.cc -o omp_reduction
+saxpy: saxpy_serial.cc
+	$(CXX) $(CXXFLAGS) saxpy_serial.cc -o saxpy
 
-info: omp_getEnvInfo.c
-	$(CC) $(FLAGS) omp_getEnvInfo.c -o omp_getEnvInfo
+montecarlo_pi: montecarlo_pi.cc
+	$(CXX) $(CXXFLAGS) montecarlo_pi.cc -o montecarlo_pi
+
+histogram_gather: histogram_gather.cc
+	$(CXX) $(CXXFLAGS) histogram_gather.cc -o histogram_gather
+
+clean:
+	rm -f $(TARGETS)
